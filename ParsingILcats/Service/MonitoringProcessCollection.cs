@@ -20,13 +20,10 @@ namespace ParsingILcats.Service
 
                 progress = Math.Round(((double)collection.IndexOf(market) + 1) / collection.Count * 100, 3);
 
-                Console.Write($"Processing {typeof(CarModel).Name} collection: {progress}%");
-                Console.SetCursorPosition(0, Console.CursorTop);
+                WriteProgress(progress, typeof(CarModel).Name);
             }
 
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine($"Models count: {result.Count}");
+            WriteResult(result.Count, typeof(CarModel).Name);
 
             return result;
         }
@@ -37,19 +34,16 @@ namespace ParsingILcats.Service
 
             double progress;
 
-            foreach (var model in collection.GetRange(0, 10))
+            foreach (var model in collection.Take(5))
             {
                 result.AddRange(htmlParser.GetConfigurations(htmlClient.GetHtmlContent(model.LinkConfiguration).Result, model));
 
                 progress = ((double)collection.IndexOf(model) + 1) / collection.Count * 100;
 
-                Console.Write($"Processing {typeof(ConfigurationModel).Name} collection: {Math.Round(progress, 3)}%");
-                Console.SetCursorPosition(0, Console.CursorTop);
+                WriteProgress(progress, typeof(ConfigurationModel).Name);
             }
 
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine($"Configurations count: {result.Count}");
+            WriteResult(result.Count, typeof(ConfigurationModel).Name);
 
             return result;
         }
@@ -60,18 +54,16 @@ namespace ParsingILcats.Service
 
             double progress;
 
-            foreach (var configuration in collection.GetRange(0, 10))
+            foreach (var configuration in collection.Take(5))
             {
                 result.AddRange(htmlParser.GetGroups(htmlClient.GetHtmlContent(configuration.LinkToGroupPage).Result, configuration));
 
                 progress = ((double)collection.IndexOf(configuration) + 1) / collection.Count * 100;
-                Console.Write($"Processing {typeof(GroupModel).Name} collection: {Math.Round(progress, 3)}%");
-                Console.SetCursorPosition(0, Console.CursorTop);
+
+                WriteProgress(progress, typeof(GroupModel).Name);
             }
 
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine($"Groups count: {result.Count}");
+            WriteResult(result.Count, typeof(GroupModel).Name);
 
             return result;
         }
@@ -82,18 +74,16 @@ namespace ParsingILcats.Service
 
             double progress;
 
-            foreach (var group in collection.GetRange(0, 10))
+            foreach (var group in collection.Take(5))
             {
                 result.AddRange(htmlParser.GetSubGroups(htmlClient.GetHtmlContent(group.LinkSubGroup).Result, group));
 
                 progress = ((double)collection.IndexOf(group) + 1) / collection.Count * 100;
-                Console.Write($"Processing {typeof(SubGroupModel).Name} collection: {Math.Round(progress, 3)}%");
-                Console.SetCursorPosition(0, Console.CursorTop);
+
+                WriteProgress(progress, typeof(SubGroupModel).Name);
             }
 
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine($"Subgroups count: {result.Count}");
+            WriteResult(result.Count, typeof(SubGroupModel).Name);
 
             return result;
         }
@@ -109,15 +99,29 @@ namespace ParsingILcats.Service
                 result.AddRange(htmlParser.GetParts(htmlClient.GetHtmlContent(subGroup.LinkToParts).Result, subGroup, htmlClient));
 
                 progress = ((double)collection.IndexOf(subGroup) + 1) / collection.Count * 100;
-                Console.Write($"Processing {typeof(PartsModel).Name} collection: {Math.Round(progress, 3)}%");
-                Console.SetCursorPosition(0, Console.CursorTop);
+
+                WriteProgress(progress, typeof(PartsModel).Name);
             }
 
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine($"Parts count: {result.Count}");
+            WriteResult(result.Count, typeof(PartsModel).Name);
 
             return result;
+        }
+
+        private void WriteProgress(double progress, string typeName)
+        {
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop);
+
+            Console.Write($"Processing {typeName} collection: {Math.Round(progress, 3)}%");
+            Console.SetCursorPosition(0, Console.CursorTop);
+        }
+
+        private void WriteResult(int result, string typeName)
+        {
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.WriteLine($"{typeName} count: {result}");
         }
     }
 }

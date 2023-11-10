@@ -6,17 +6,14 @@ namespace ParsingILcats.Service
 {
     public class MonitoringProcessCollection
     {
-
-
-        public List<CarModel> Car(List<MarketModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
+        public async Task<List<CarModel>> Car(List<MarketModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
         {
             var result = new List<CarModel>();
-
             double progress;
 
-            foreach (var market in collection)
+            foreach (var market in collection.Take(5))
             {
-                result.AddRange(htmlParser.GetModels(htmlClient.GetHtmlContent(market.LinkCarModel).Result, market));
+                result.AddRange(htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market));
 
                 progress = Math.Round(((double)collection.IndexOf(market) + 1) / collection.Count * 100, 3);
 
@@ -28,15 +25,14 @@ namespace ParsingILcats.Service
             return result;
         }
 
-        public List<ConfigurationModel> Configuration(List<CarModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
+        public async Task<List<ConfigurationModel>> Configuration(List<CarModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
         {
             var result = new List<ConfigurationModel>();
-
             double progress;
 
             foreach (var model in collection.Take(5))
             {
-                result.AddRange(htmlParser.GetConfigurations(htmlClient.GetHtmlContent(model.LinkConfiguration).Result, model));
+                result.AddRange(htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model));
 
                 progress = ((double)collection.IndexOf(model) + 1) / collection.Count * 100;
 
@@ -48,15 +44,14 @@ namespace ParsingILcats.Service
             return result;
         }
 
-        public List<GroupModel> Group(List<ConfigurationModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
+        public async Task<List<GroupModel>> Group(List<ConfigurationModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
         {
             var result = new List<GroupModel>();
-
             double progress;
 
             foreach (var configuration in collection.Take(5))
             {
-                result.AddRange(htmlParser.GetGroups(htmlClient.GetHtmlContent(configuration.LinkToGroupPage).Result, configuration));
+                result.AddRange(htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration));
 
                 progress = ((double)collection.IndexOf(configuration) + 1) / collection.Count * 100;
 
@@ -68,15 +63,14 @@ namespace ParsingILcats.Service
             return result;
         }
 
-        public List<SubGroupModel> SubGroup(List<GroupModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
+        public async Task<List<SubGroupModel>> SubGroup(List<GroupModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
         {
             var result = new List<SubGroupModel>();
-
             double progress;
 
             foreach (var group in collection.Take(5))
             {
-                result.AddRange(htmlParser.GetSubGroups(htmlClient.GetHtmlContent(group.LinkSubGroup).Result, group));
+                result.AddRange(htmlParser.GetSubGroups(await htmlClient.GetHtmlContent(group.LinkSubGroup), group));
 
                 progress = ((double)collection.IndexOf(group) + 1) / collection.Count * 100;
 
@@ -88,15 +82,14 @@ namespace ParsingILcats.Service
             return result;
         }
 
-        public List<PartsModel> Parts(List<SubGroupModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
+        public async Task<List<PartsModel>> Parts(List<SubGroupModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
         {
             var result = new List<PartsModel>();
-
             double progress;
 
             foreach (var subGroup in collection)
             {
-                result.AddRange(htmlParser.GetParts(htmlClient.GetHtmlContent(subGroup.LinkToParts).Result, subGroup, htmlClient));
+                result.AddRange(await htmlParser.GetParts(await htmlClient.GetHtmlContent(subGroup.LinkToParts), subGroup, htmlClient));
 
                 progress = ((double)collection.IndexOf(subGroup) + 1) / collection.Count * 100;
 
@@ -116,7 +109,6 @@ namespace ParsingILcats.Service
             Console.Write($"Processing {typeName} collection: {Math.Round(progress, 3)}%");
             Console.SetCursorPosition(0, Console.CursorTop);
         }
-
         private void WriteResult(int result, string typeName)
         {
             Console.Write(new string(' ', Console.WindowWidth));

@@ -30,7 +30,7 @@ namespace ParsingILcats.Parsing
         private static string CreatGroupLink(IElement element, CarModel car)
         {
             string market = car.Market.Code;
-            string model = car.Id;
+            string model = car.Code;
 
             return $"https://www.ilcats.ru/toyota/?function=getGroups&market={market}&model={model}&modification={element.QuerySelector("a").TextContent}";
         }

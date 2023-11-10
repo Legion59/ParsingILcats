@@ -14,7 +14,7 @@ namespace ParsingILcats.Parsing
                              .SelectMany(el => GetModelInfo(el, htmlParser, market));
         }
 
-        public static IEnumerable<CarModel> GetModelInfo(IElement infoHtml, HtmlParser htmlParser, MarketModel market)
+        private static IEnumerable<CarModel> GetModelInfo(IElement infoHtml, HtmlParser htmlParser, MarketModel market)
         {
             string carName = infoHtml.QuerySelector("div.name").TextContent;
 
@@ -24,7 +24,7 @@ namespace ParsingILcats.Parsing
                              .Select(el => new CarModel
                              {
                                  Market = market,
-                                 Id = el.QuerySelector("div.id").TextContent,
+                                 Code = el.QuerySelector("div.id").TextContent,
                                  Name = carName,
                                  DateRange = el.QuerySelector("div.dateRange").TextContent,
                                  ModelCode = el.QuerySelector("div.modelCode").TextContent,

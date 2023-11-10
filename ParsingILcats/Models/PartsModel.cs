@@ -8,6 +8,8 @@
         public string TreeCode { get; set; }
         public string TreeName { get; set; }
         public string DateRange { get; set; }
+
+        public int SubGroupId { get; set; }
         public SubGroupModel SubGroup { get; set; }
     }
 }

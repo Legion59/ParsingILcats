@@ -25,7 +25,7 @@ namespace ParsingILcats.Parsing
         private static string CreatePartsLink(IElement element, GroupModel groupModel)
         {
             string market = groupModel.Configuration.Car.Market.Code;
-            string model = groupModel.Configuration.Car.Id;
+            string model = groupModel.Configuration.Car.Code;
             string modification = groupModel.Configuration.ConfigurationName;
             int group = groupModel.Id;
 

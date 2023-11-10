@@ -1,15 +1,12 @@
 ﻿using AngleSharp.Html.Parser;
-using ParsingILcats.Models;
 using ParsingILcats.Parsing;
 using ParsingILcats.Service;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace ParsingILcats
 {
     public class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             HtmlClient htmlClient = new HtmlClient(new HttpClient());
             HtmlParser htmlParser = new HtmlParser();
@@ -25,13 +22,15 @@ namespace ParsingILcats
 
             var allModels = monitoringProcessCollection.Car(markets, htmlParser, htmlClient);
 
-            var allConfigurations = monitoringProcessCollection.Configuration(allModels, htmlParser, htmlClient);
+            var allConfigurations = monitoringProcessCollection.Configuration(await allModels, htmlParser, htmlClient);
 
-            var allGroups = monitoringProcessCollection.Group(allConfigurations, htmlParser, htmlClient);
+            var allGroups = monitoringProcessCollection.Group(await allConfigurations, htmlParser, htmlClient);
 
-            var allSubGroups = monitoringProcessCollection.SubGroup(allGroups, htmlParser, htmlClient);
+            var allSubGroups = monitoringProcessCollection.SubGroup(await allGroups, htmlParser, htmlClient);
 
-            var allParts = monitoringProcessCollection.Parts(allSubGroups, htmlParser, htmlClient);
+            var allParts = monitoringProcessCollection.Parts(await allSubGroups, htmlParser, htmlClient);
+
+            Console.WriteLine(allParts.Result.Count);
 
             htmlClient.ShowRequestCount();
         }

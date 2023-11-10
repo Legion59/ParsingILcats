@@ -21,7 +21,7 @@ namespace ParsingILcats.Parsing
         private static string CreatSubGroupLink(int index, ConfigurationModel configuration)
         {
             string market = configuration.Car.Market.Code;
-            string model = configuration.Car.Id;
+            string model = configuration.Car.Code;
             string modification = configuration.ConfigurationName;
 
             return $"https://www.ilcats.ru/toyota/?function=getSubGroups&market={market}&model={model}&modification={modification}&group={index + 1}";

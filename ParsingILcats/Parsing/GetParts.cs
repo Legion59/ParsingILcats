@@ -6,7 +6,7 @@ namespace ParsingILcats.Parsing
 {
     public static partial class HtmlParserExtensions
     {
-        public static IEnumerable<PartsModel> GetParts(this HtmlParser htmlParser, string htmlContent, SubGroupModel subGroup, HtmlClient htmlClient)
+        public static async Task<IEnumerable<PartsModel>> GetParts(this HtmlParser htmlParser, string htmlContent, SubGroupModel subGroup, HtmlClient htmlClient)
         {
             var classNames = htmlParser.ParseDocument(htmlContent)
                                                     .QuerySelectorAll("tbody")
@@ -23,13 +23,13 @@ namespace ParsingILcats.Parsing
 
             if (parts.Count() != 0)
             {
-                var imageName = $"{subGroup.Group.Configuration.Car.Market.Code}-{subGroup.Group.Configuration.Car.Id}-{subGroup.Group.Configuration.ConfigurationName}-{subGroup.Group.Id}-{subGroup.Id}";
+                var imageName = $"{subGroup.Group.Configuration.Car.Market.Code}-{subGroup.Group.Configuration.Car.Code}-{subGroup.Group.Configuration.ConfigurationName}-{subGroup.Group.Id}-{subGroup.Id}";
                 var imageLink = htmlParser.ParseDocument(htmlContent)
                                           .QuerySelector("div.Image")
                                           .QuerySelector("img")
                                           .GetAttribute("src");
 
-                htmlClient.SaveImage(imageLink, imageName);
+                await htmlClient.SaveImage(imageLink, imageName);
             }
 
             return parts;

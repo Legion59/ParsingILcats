@@ -20,13 +20,13 @@ namespace ParsingILcats.Parsing
                                  LinkToGroupPage = CreatGroupLink(el, car),
                                  Specs = el.QuerySelectorAll("td")
                                                 .Skip(2)
-                                                .Select(el => new Spec
+                                                .Select(el => new SpecModel
                                                 {
                                                     Value = el.TextContent
                                                 })
                                                 .Where(el => !string.IsNullOrEmpty(el.Value))
                                                 .ToList(),
-                                 Car = car,
+                                 Car = car
                              });
         }
 

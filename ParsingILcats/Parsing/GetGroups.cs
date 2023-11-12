@@ -11,10 +11,10 @@ namespace ParsingILcats.Parsing
                              .QuerySelectorAll("div.name")
                              .Select((el, index) => new GroupModel
                              {
-                                 Configuration = configuration,
                                  Id = index + 1,
                                  Name = el.QuerySelector("a").TextContent,
-                                 LinkSubGroup = CreatSubGroupLink(index + 1, configuration)
+                                 LinkSubGroup = CreatSubGroupLink(index + 1, configuration),
+                                 Configuration = configuration
                              });
         }
 

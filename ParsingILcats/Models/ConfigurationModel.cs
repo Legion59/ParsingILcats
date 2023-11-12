@@ -8,7 +8,7 @@ namespace ParsingILcats.Models
         public string ConfigurationCode { get; set; }
         public string DateRange { get; set; }
         public string LinkToGroupPage { get; set; }
-        public List<Spec> Specs { get; set; } = new List<Spec>();
+        public List<SpecModel> Specs { get; set; } = new List<SpecModel>();
 
         public int CarId { get; set; }
         public CarModel Car { get; set; }
@@ -16,7 +16,7 @@ namespace ParsingILcats.Models
         public IEnumerable<GroupModel> Groups { get; set; }
     }
 
-    public class Spec
+    public class SpecModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -13,10 +13,10 @@ namespace ParsingILcats.Parsing
                              .Where(el => el.ClassName == "List" && el.Children.HasClass("image"))
                              .Select(el => new SubGroupModel
                              {
-                                 Group = group,
                                  Id = GetSubId(el.QuerySelector("img").GetAttribute("alt")),
                                  Name = el.QuerySelector("div.name").TextContent,
-                                 LinkToParts = CreatePartsLink(el, group)
+                                 LinkToParts = CreatePartsLink(el, group),
+                                 Group = group
                              });
         }
 

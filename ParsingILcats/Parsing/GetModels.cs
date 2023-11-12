@@ -23,12 +23,12 @@ namespace ParsingILcats.Parsing
                              .Where(el => el.ClassName == "List" && el.Children.HasClass("id"))
                              .Select(el => new CarModel
                              {
-                                 Market = market,
                                  Id = el.QuerySelector("div.id").TextContent,
                                  Name = carName,
                                  DateRange = el.QuerySelector("div.dateRange").TextContent,
                                  ModelCode = el.QuerySelector("div.modelCode").TextContent,
-                                 LinkConfiguration = $"https://www.ilcats.ru/toyota/?function=getComplectations&market={market.Code}&model={el.QuerySelector("div.id").TextContent}"
+                                 LinkConfiguration = $"https://www.ilcats.ru/toyota/?function=getComplectations&market={market.Code}&model={el.QuerySelector("div.id").TextContent}",
+                                 Market = market
                              });
         }
     }

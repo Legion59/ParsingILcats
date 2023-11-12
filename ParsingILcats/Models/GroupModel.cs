@@ -9,6 +9,6 @@
         public int ConfigurationId { get; set; }
         public ConfigurationModel Configuration { get; set; }
 
-        public ICollection<SubGroupModel> SubGroups { get; set; }
+        public IEnumerable<SubGroupModel> SubGroups { get; set; }
     }
 }

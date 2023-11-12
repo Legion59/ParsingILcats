@@ -9,6 +9,6 @@
         public int GroupId { get; set; }
         public GroupModel Group { get; set; }
 
-        public ICollection<PartsModel> Parts { get; set; }
+        public IEnumerable<PartsModel> Parts { get; set; }
     }
 }

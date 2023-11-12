@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Html.Parser;
+using Microsoft.IdentityModel.Tokens;
 using ParsingILcats.Models;
 using ParsingILcats.Parsing;
 
@@ -6,6 +7,15 @@ namespace ParsingILcats.Service
 {
     public class MonitoringProcessCollection
     {
+        public async Task<List<MarketModel>> Markets(string urlMarket, string urlMainPage, HtmlParser htmlParser, HtmlClient htmlClient)
+        {
+            var result = htmlParser.GetMarkets(await htmlClient.GetHtmlContent(urlMarket), urlMainPage).ToList();
+
+            Console.WriteLine($"Markets count: {result.Count}");
+
+            return result;
+        }
+
         public async Task<List<CarModel>> Car(List<MarketModel> collection, HtmlParser htmlParser, HtmlClient htmlClient)
         {
             var result = new List<CarModel>();
@@ -13,10 +23,12 @@ namespace ParsingILcats.Service
 
             foreach (var market in collection.Take(5))
             {
-                result.AddRange(htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market));
+                var cars = htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market);
+
+                market.Cars = cars;
+                result.AddRange(cars);
 
                 progress = Math.Round(((double)collection.IndexOf(market) + 1) / collection.Count * 100, 3);
-
                 WriteProgress(progress, typeof(CarModel).Name);
             }
 
@@ -32,10 +44,12 @@ namespace ParsingILcats.Service
 
             foreach (var model in collection.Take(5))
             {
-                result.AddRange(htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model));
+                var conf = htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model);
+
+                model.Configurations = conf;
+                result.AddRange(conf);
 
                 progress = ((double)collection.IndexOf(model) + 1) / collection.Count * 100;
-
                 WriteProgress(progress, typeof(ConfigurationModel).Name);
             }
 
@@ -51,10 +65,12 @@ namespace ParsingILcats.Service
 
             foreach (var configuration in collection.Take(5))
             {
-                result.AddRange(htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration));
+                var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration);
+
+                configuration.Groups = grops;
+                result.AddRange(grops);
 
                 progress = ((double)collection.IndexOf(configuration) + 1) / collection.Count * 100;
-
                 WriteProgress(progress, typeof(GroupModel).Name);
             }
 
@@ -68,12 +84,14 @@ namespace ParsingILcats.Service
             var result = new List<SubGroupModel>();
             double progress;
 
-            foreach (var group in collection.Take(5))
+            foreach (var group in collection.Take(3))
             {
-                result.AddRange(htmlParser.GetSubGroups(await htmlClient.GetHtmlContent(group.LinkSubGroup), group));
+                var subGrops = htmlParser.GetSubGroups(await htmlClient.GetHtmlContent(group.LinkSubGroup), group);
+
+                group.SubGroups = subGrops;
+                result.AddRange(subGrops);
 
                 progress = ((double)collection.IndexOf(group) + 1) / collection.Count * 100;
-
                 WriteProgress(progress, typeof(SubGroupModel).Name);
             }
 
@@ -89,13 +107,23 @@ namespace ParsingILcats.Service
 
             foreach (var subGroup in collection)
             {
-                result.AddRange(await htmlParser.GetParts(await htmlClient.GetHtmlContent(subGroup.LinkToParts), subGroup, htmlClient));
+                var parts = await htmlParser.GetParts(await htmlClient.GetHtmlContent(subGroup.LinkToParts), subGroup, htmlClient);
+
+                if (!parts.IsNullOrEmpty())
+                {
+                    subGroup.Parts = parts;
+                    result.AddRange(parts);
+                }
+                else
+                {
+                    collection.Remove(subGroup); 
+                }
 
                 progress = ((double)collection.IndexOf(subGroup) + 1) / collection.Count * 100;
-
                 WriteProgress(progress, typeof(PartsModel).Name);
             }
 
+            WriteResult(collection.Count, typeof(SubGroupModel).Name);
             WriteResult(result.Count, typeof(PartsModel).Name);
 
             return result;

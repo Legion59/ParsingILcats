@@ -15,22 +15,25 @@ namespace ParsingILcats.Parsing
                              .Skip(1)
                              .Select(el => new ConfigurationModel
                              {
-                                 Car = car,
-                                 ConfigurationName = el.QuerySelector("a").TextContent,
+                                 ConfigurationCode = el.QuerySelector("a").TextContent,
                                  DateRange = el.QuerySelector("div.dateRange").TextContent,
                                  LinkToGroupPage = CreatGroupLink(el, car),
                                  Specs = el.QuerySelectorAll("td")
                                                 .Skip(2)
-                                                .Select(el => el.TextContent)
-                                                .Where(el => !string.IsNullOrEmpty(el))
-                                                .ToList()
+                                                .Select(el => new Spec
+                                                {
+                                                    Value = el.TextContent
+                                                })
+                                                .Where(el => !string.IsNullOrEmpty(el.Value))
+                                                .ToList(),
+                                 Car = car,
                              });
         }
 
         private static string CreatGroupLink(IElement element, CarModel car)
         {
             string market = car.Market.Code;
-            string model = car.Code;
+            string model = car.Id;
 
             return $"https://www.ilcats.ru/toyota/?function=getGroups&market={market}&model={model}&modification={element.QuerySelector("a").TextContent}";
         }

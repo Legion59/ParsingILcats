@@ -24,7 +24,7 @@ namespace ParsingILcats.Parsing
                              .Select(el => new CarModel
                              {
                                  Market = market,
-                                 Code = el.QuerySelector("div.id").TextContent,
+                                 Id = el.QuerySelector("div.id").TextContent,
                                  Name = carName,
                                  DateRange = el.QuerySelector("div.dateRange").TextContent,
                                  ModelCode = el.QuerySelector("div.modelCode").TextContent,

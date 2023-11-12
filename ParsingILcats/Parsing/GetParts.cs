@@ -21,9 +21,10 @@ namespace ParsingILcats.Parsing
                                   .Where(el => el.Length > 1)
                                   .SelectMany(el => CreateParts(el, subGroup));
 
+
             if (parts.Count() != 0)
             {
-                var imageName = $"{subGroup.Group.Configuration.Car.Market.Code}-{subGroup.Group.Configuration.Car.Code}-{subGroup.Group.Configuration.ConfigurationName}-{subGroup.Group.Id}-{subGroup.Id}";
+                var imageName = $"{subGroup.Group.Configuration.Car.Market.Code}-{subGroup.Group.Configuration.Car.Id}-{subGroup.Group.Configuration.ConfigurationCode}-{subGroup.Group.Id}-{subGroup.Id}";
                 var imageLink = htmlParser.ParseDocument(htmlContent)
                                           .QuerySelector("div.Image")
                                           .QuerySelector("img")

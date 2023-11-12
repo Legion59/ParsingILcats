@@ -25,8 +25,8 @@ namespace ParsingILcats.Parsing
         private static string CreatePartsLink(IElement element, GroupModel groupModel)
         {
             string market = groupModel.Configuration.Car.Market.Code;
-            string model = groupModel.Configuration.Car.Code;
-            string modification = groupModel.Configuration.ConfigurationName;
+            string model = groupModel.Configuration.Car.Id;
+            string modification = groupModel.Configuration.ConfigurationCode;
             int group = groupModel.Id;
 
             return $"https://www.ilcats.ru/toyota/?function=getParts&market={market}&model={model}&modification={modification}&group={group}&subgroup={GetSubId(element.QuerySelector("img").GetAttribute("alt"))}";

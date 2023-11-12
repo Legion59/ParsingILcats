@@ -1,5 +1,4 @@
 ﻿using AngleSharp.Html.Parser;
-using ParsingILcats.Parsing;
 using ParsingILcats.Service;
 
 namespace ParsingILcats
@@ -17,10 +16,9 @@ namespace ParsingILcats
 
             Console.WriteLine("Brand: Toyota");
 
-            var markets = htmlParser.GetMarkets(await htmlClient.GetHtmlContent(urlMarketPage), urlMainPage).ToList();
-            Console.WriteLine($"Markets count: {markets.Count}");
+            var allMarkets = monitoringProcessCollection.Markets(urlMarketPage, urlMainPage, htmlParser, htmlClient);
 
-            var allModels = monitoringProcessCollection.Car(markets, htmlParser, htmlClient);
+            var allModels = monitoringProcessCollection.Car(await allMarkets, htmlParser, htmlClient);
 
             var allConfigurations = monitoringProcessCollection.Configuration(await allModels, htmlParser, htmlClient);
 
@@ -32,12 +30,11 @@ namespace ParsingILcats
 
             Console.WriteLine(allParts.Result.Count);
 
+
+
             htmlClient.ShowRequestCount();
         }
-
-        
-
-
+                
         /*private List<U> CollectionProcess<T, U>(IEnumerable<T> collection,HtmlParser htmlParser ,HtmlClient htmlClient)
         {
             var result = new List<U>();

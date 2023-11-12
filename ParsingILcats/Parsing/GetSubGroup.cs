@@ -13,7 +13,7 @@ namespace ParsingILcats.Parsing
                              .Where(el => el.ClassName == "List" && el.Children.HasClass("image"))
                              .Select(el => new SubGroupModel
                              {
-                                 Id = GetSubId(el.QuerySelector("img").GetAttribute("alt")),
+                                 Index = GetSubId(el.QuerySelector("img").GetAttribute("alt")),
                                  Name = el.QuerySelector("div.name").TextContent,
                                  LinkToParts = CreatePartsLink(el, group),
                                  Group = group
@@ -25,9 +25,9 @@ namespace ParsingILcats.Parsing
         private static string CreatePartsLink(IElement element, GroupModel groupModel)
         {
             string market = groupModel.Configuration.Car.Market.Code;
-            string model = groupModel.Configuration.Car.Id;
+            string model = groupModel.Configuration.Car.ModelCode;
             string modification = groupModel.Configuration.ConfigurationCode;
-            int group = groupModel.Id;
+            int group = groupModel.Index;
 
             return $"https://www.ilcats.ru/toyota/?function=getParts&market={market}&model={model}&modification={modification}&group={group}&subgroup={GetSubId(element.QuerySelector("img").GetAttribute("alt"))}";
 

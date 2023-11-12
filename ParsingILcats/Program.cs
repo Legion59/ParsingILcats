@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Html.Parser;
+using ParsingILcats.Database;
 using ParsingILcats.Service;
 
 namespace ParsingILcats
@@ -11,8 +12,11 @@ namespace ParsingILcats
             HtmlParser htmlParser = new HtmlParser();
             MonitoringProcessCollection monitoringProcessCollection = new MonitoringProcessCollection();
 
+            ParsingDbContext parsingDbContext = new ParsingDbContext();
+
             string urlMainPage = "https://www.ilcats.ru";
             string urlMarketPage = "https://www.ilcats.ru/toyota/";
+
 
             Console.WriteLine("Brand: Toyota");
 
@@ -28,29 +32,16 @@ namespace ParsingILcats
 
             var allParts = monitoringProcessCollection.Parts(await allSubGroups, htmlParser, htmlClient);
 
-            Console.WriteLine(allParts.Result.Count);
+            await parsingDbContext.AddRangeAsync(await allMarkets);
+            await parsingDbContext.AddRangeAsync(await allModels);
+            await parsingDbContext.AddRangeAsync(await allConfigurations);
+            await parsingDbContext.AddRangeAsync(await allGroups);
+            await parsingDbContext.AddRangeAsync(await allSubGroups);
+            await parsingDbContext.AddRangeAsync(await allParts);
 
-
+            await parsingDbContext.SaveChangesAsync();
 
             htmlClient.ShowRequestCount();
         }
-                
-        /*private List<U> CollectionProcess<T, U>(IEnumerable<T> collection,HtmlParser htmlParser ,HtmlClient htmlClient)
-        {
-            var result = new List<U>();
-
-            foreach (var el in collection)
-            {
-                var a = typeof(T).Name switch
-                {
-                    "CarModel" => htmlParser.GetModels(htmlClient.GetHtmlContent(el.)),
-                    "ConfigurationModel" => 2,
-                    "GroupModel" => 3,
-                    "SubGroupModel" => 4,
-                    "PartsModel" => 5,
-                    _ => null
-                }; 
-            }
-        }*/
     }
 }

@@ -20,7 +20,7 @@ namespace ParsingILcats.Parsing
                                  LinkToGroupPage = CreatGroupLink(el, car),
                                  Specs = el.QuerySelectorAll("td")
                                                 .Skip(2)
-                                                .Select(el => new SpecModel
+                                                .Select(el => new Spec
                                                 {
                                                     Value = el.TextContent
                                                 })
@@ -33,7 +33,7 @@ namespace ParsingILcats.Parsing
         private static string CreatGroupLink(IElement element, CarModel car)
         {
             string market = car.Market.Code;
-            string model = car.Id;
+            string model = car.ModelCode;
 
             return $"https://www.ilcats.ru/toyota/?function=getGroups&market={market}&model={model}&modification={element.QuerySelector("a").TextContent}";
         }

@@ -23,7 +23,7 @@ namespace ParsingILcats.Service
 
             foreach (var market in collection.Take(5))
             {
-                var cars = htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market);
+                var cars = htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market).ToList();
 
                 market.Cars = cars;
                 result.AddRange(cars);
@@ -44,7 +44,7 @@ namespace ParsingILcats.Service
 
             foreach (var model in collection.Take(5))
             {
-                var conf = htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model);
+                var conf = htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model).ToList();
 
                 model.Configurations = conf;
                 result.AddRange(conf);
@@ -65,7 +65,7 @@ namespace ParsingILcats.Service
 
             foreach (var configuration in collection.Take(5))
             {
-                var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration);
+                var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration).ToList();
 
                 configuration.Groups = grops;
                 result.AddRange(grops);
@@ -86,7 +86,7 @@ namespace ParsingILcats.Service
 
             foreach (var group in collection.Take(3))
             {
-                var subGrops = htmlParser.GetSubGroups(await htmlClient.GetHtmlContent(group.LinkSubGroup), group);
+                var subGrops = htmlParser.GetSubGroups(await htmlClient.GetHtmlContent(group.LinkSubGroup), group).ToList();
 
                 group.SubGroups = subGrops;
                 result.AddRange(subGrops);

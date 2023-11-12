@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AngleSharp;
+using Microsoft.EntityFrameworkCore;
 using ParsingILcats.Models;
 
 namespace ParsingILcats.Database
@@ -12,7 +13,7 @@ namespace ParsingILcats.Database
         public DbSet<SubGroupModel > SubGroupSet { get; set; }
         public DbSet<PartsModel> PartsSet { get; set; }
 
-        protected ParsingDbContext() : base()
+        public ParsingDbContext() : base()
         {
         }
 
@@ -20,6 +21,7 @@ namespace ParsingILcats.Database
         {
             modelBuilder.Entity<MarketModel>(market =>
             {
+                market.ToTable("Markets");
                 market.HasKey(x => x.Id);
                 market.Property(x => x.Id).ValueGeneratedOnAdd();
                 market.Ignore(x => x.LinkCarModel);
@@ -27,7 +29,9 @@ namespace ParsingILcats.Database
 
             modelBuilder.Entity<CarModel>(car =>
             {
+                car.ToTable("Models");
                 car.HasKey(x => x.Id);
+                car.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
                 car.Ignore(x => x.LinkConfiguration);
 
                 car.HasOne(x => x.Market)
@@ -38,8 +42,9 @@ namespace ParsingILcats.Database
 
             modelBuilder.Entity<ConfigurationModel>(configuration =>
             {
-                configuration.HasKey(x => x.ConfigurationCode);
-                configuration.Property(x => x.ConfigurationCode).IsRequired();
+                configuration.ToTable("Configurations");
+                configuration.HasKey(x => x.Id);
+                configuration.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
                 configuration.Ignore(x => x.LinkToGroupPage);
 
                 configuration.HasOne(x => x.Car)
@@ -50,7 +55,9 @@ namespace ParsingILcats.Database
 
             modelBuilder.Entity<GroupModel>(group =>
             {
+                group.ToTable("Groups");
                 group.HasKey(x => x.Id);
+                group.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
                 group.Ignore(x => x.LinkSubGroup);
 
                 group.HasOne(x => x.Configuration)
@@ -61,8 +68,9 @@ namespace ParsingILcats.Database
 
             modelBuilder.Entity<SubGroupModel>(subGroup =>
             {
+                subGroup.ToTable("SubGroups");
                 subGroup.HasKey(x => x.Id);
-                subGroup.Property(x => x.Id).IsRequired();
+                subGroup.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
                 subGroup.Ignore(x => x.LinkToParts);
 
                 subGroup.HasOne(x => x.Group)
@@ -73,6 +81,7 @@ namespace ParsingILcats.Database
 
             modelBuilder.Entity<PartsModel>(parts =>
             {
+                parts.ToTable("Parts");
                 parts.HasKey(x => x.Code);
                 parts.Property(x => x.Code).IsRequired();
 

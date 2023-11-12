@@ -2,7 +2,8 @@
 {
     public class SubGroupModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public string Index { get; set; }
         public string Name { get; set; }
         public string LinkToParts { get; set; }
 

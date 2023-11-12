@@ -11,7 +11,7 @@ namespace ParsingILcats.Parsing
                              .QuerySelectorAll("div.name")
                              .Select((el, index) => new GroupModel
                              {
-                                 Id = index + 1,
+                                 Index = index + 1,
                                  Name = el.QuerySelector("a").TextContent,
                                  LinkSubGroup = CreatSubGroupLink(index + 1, configuration),
                                  Configuration = configuration
@@ -21,7 +21,7 @@ namespace ParsingILcats.Parsing
         private static string CreatSubGroupLink(int index, ConfigurationModel configuration)
         {
             string market = configuration.Car.Market.Code;
-            string model = configuration.Car.Id;
+            string model = configuration.Car.ModelCode;
             string modification = configuration.ConfigurationCode;
 
             return $"https://www.ilcats.ru/toyota/?function=getSubGroups&market={market}&model={model}&modification={modification}&group={index + 1}";

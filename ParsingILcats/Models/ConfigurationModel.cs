@@ -5,10 +5,11 @@ namespace ParsingILcats.Models
 {
     public class ConfigurationModel
     {
+        public int Id { get; set; }
         public string ConfigurationCode { get; set; }
         public string DateRange { get; set; }
         public string LinkToGroupPage { get; set; }
-        public List<SpecModel> Specs { get; set; } = new List<SpecModel>();
+        public List<Spec> Specs { get; set; } = new List<Spec>();
 
         public int CarId { get; set; }
         public CarModel Car { get; set; }
@@ -16,13 +17,14 @@ namespace ParsingILcats.Models
         public IEnumerable<GroupModel> Groups { get; set; }
     }
 
-    public class SpecModel
+    public class Spec
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Value { get; set; }
 
+        [Required]
         public int ConfigurationId { get; set; }
         [ForeignKey("ConfigurationId")]
         public ConfigurationModel Configuration { get; set; }

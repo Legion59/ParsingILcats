@@ -24,13 +24,15 @@ namespace ParsingILcats.Parsing
 
             if (parts.Count() != 0)
             {
-                var imageName = $"{subGroup.Group.Configuration.Car.Market.Code}-{subGroup.Group.Configuration.Car.Id}-{subGroup.Group.Configuration.ConfigurationCode}-{subGroup.Group.Id}-{subGroup.Id}";
+                var imageName = $"{subGroup.Group.Configuration.Car.Market.Code}-{subGroup.Group.Configuration.Car.ModelCode}-{subGroup.Group.Configuration.ConfigurationCode}-{subGroup.Group.Index}-{subGroup.Index}";
                 var imageLink = htmlParser.ParseDocument(htmlContent)
                                           .QuerySelector("div.Image")
                                           .QuerySelector("img")
                                           .GetAttribute("src");
 
                 await htmlClient.SaveImage(imageLink, imageName);
+
+                parts.Select(part => part.PictureName = imageName);
             }
 
             return parts;

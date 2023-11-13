@@ -23,7 +23,7 @@ namespace ParsingILcats.Database
             {
                 market.ToTable("Markets");
                 market.HasKey(x => x.Id);
-                market.Property(x => x.Id).ValueGeneratedOnAdd();
+                market.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
                 market.Ignore(x => x.LinkCarModel);
             });
 
@@ -82,8 +82,8 @@ namespace ParsingILcats.Database
             modelBuilder.Entity<PartsModel>(parts =>
             {
                 parts.ToTable("Parts");
-                parts.HasKey(x => x.Code);
-                parts.Property(x => x.Code).IsRequired();
+                parts.HasKey(x => x.Id);
+                parts.Property(x => x.Code).ValueGeneratedOnAdd().IsRequired();
 
                 parts.HasOne(x => x.SubGroup)
                              .WithMany(x => x.Parts)

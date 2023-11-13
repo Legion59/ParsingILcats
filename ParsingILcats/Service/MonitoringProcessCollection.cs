@@ -105,9 +105,9 @@ namespace ParsingILcats.Service
             var result = new List<PartsModel>();
             double progress;
 
-            foreach (var subGroup in collection)
+            foreach (var subGroup in collection.Take(10))
             {
-                var parts = await htmlParser.GetParts(await htmlClient.GetHtmlContent(subGroup.LinkToParts), subGroup, htmlClient);
+                var parts = (await htmlParser.GetParts(await htmlClient.GetHtmlContent(subGroup.LinkToParts), subGroup, htmlClient)).ToList();
 
                 if (!parts.IsNullOrEmpty())
                 {

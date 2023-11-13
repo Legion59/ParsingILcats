@@ -32,6 +32,7 @@ namespace ParsingILcats
 
             var allParts = monitoringProcessCollection.Parts(await allSubGroups, htmlParser, htmlClient);
 
+
             await parsingDbContext.AddRangeAsync(await allMarkets);
             await parsingDbContext.AddRangeAsync(await allModels);
             await parsingDbContext.AddRangeAsync(await allConfigurations);

@@ -2,6 +2,7 @@
 {
     public class PartsModel
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string Count { get; set; }
         public string Info { get; set; }

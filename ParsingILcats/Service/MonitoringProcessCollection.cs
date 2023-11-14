@@ -9,7 +9,7 @@ namespace ParsingILcats.Service
     {
         public async Task<List<MarketModel>> Markets(string urlMarket, string urlMainPage, HtmlParser htmlParser, HtmlClient htmlClient)
         {
-            var result = htmlParser.GetMarkets(await htmlClient.GetHtmlContent(urlMarket), urlMainPage).ToList();
+            var result = htmlParser.GetMarkets(await htmlClient.GetHtmlContent(urlMarket), urlMainPage).Take(1).ToList();
 
             Console.WriteLine($"Markets count: {result.Count}");
 
@@ -21,9 +21,9 @@ namespace ParsingILcats.Service
             var result = new List<CarModel>();
             double progress;
 
-            foreach (var market in collection.Take(5))
+            foreach (var market in collection)
             {
-                var cars = htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market).ToList();
+                var cars = htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market).Take(1).ToList();
 
                 market.Cars = cars;
                 result.AddRange(cars);
@@ -42,9 +42,9 @@ namespace ParsingILcats.Service
             var result = new List<ConfigurationModel>();
             double progress;
 
-            foreach (var model in collection.Take(5))
+            foreach (var model in collection)
             {
-                var conf = htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model).ToList();
+                var conf = htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model).Take(1).ToList();
 
                 model.Configurations = conf;
                 result.AddRange(conf);
@@ -63,7 +63,7 @@ namespace ParsingILcats.Service
             var result = new List<GroupModel>();
             double progress;
 
-            foreach (var configuration in collection.Take(5))
+            foreach (var configuration in collection)
             {
                 var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration).ToList();
 
@@ -84,7 +84,7 @@ namespace ParsingILcats.Service
             var result = new List<SubGroupModel>();
             double progress;
 
-            foreach (var group in collection.Take(3))
+            foreach (var group in collection)
             {
                 var subGrops = htmlParser.GetSubGroups(await htmlClient.GetHtmlContent(group.LinkSubGroup), group).ToList();
 
@@ -105,8 +105,9 @@ namespace ParsingILcats.Service
             var result = new List<PartsModel>();
             double progress;
 
-            foreach (var subGroup in collection.Take(10))
+            foreach (var subGroup in collection)
             {
+
                 var parts = (await htmlParser.GetParts(await htmlClient.GetHtmlContent(subGroup.LinkToParts), subGroup, htmlClient)).ToList();
 
                 if (!parts.IsNullOrEmpty())
@@ -114,13 +115,14 @@ namespace ParsingILcats.Service
                     subGroup.Parts = parts;
                     result.AddRange(parts);
                 }
-                else
-                {
-                    collection.Remove(subGroup); 
-                }
 
                 progress = ((double)collection.IndexOf(subGroup) + 1) / collection.Count * 100;
                 WriteProgress(progress, typeof(PartsModel).Name);
+            }
+
+            foreach(var part in collection.Where(el => el.Parts == null).ToList())
+            {
+                collection.Remove(part);
             }
 
             WriteResult(collection.Count, typeof(SubGroupModel).Name);

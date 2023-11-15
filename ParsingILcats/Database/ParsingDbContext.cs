@@ -93,7 +93,7 @@ namespace ParsingILcats.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            _ = optionsBuilder.UseSqlServer("Server=DESKTOP-FNOV9O5\\SQLEXPRESS;Database=ILcats;Trusted_Connection=True;TrustServerCertificate=True;");
+            _ = optionsBuilder.UseSqlServer("Server=localhost;Database=Db;Trusted_Connection=True;TrustServerCertificate=True;");
         }
     }
 }

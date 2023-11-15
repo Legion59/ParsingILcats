@@ -1,5 +1,4 @@
-﻿using AngleSharp;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ParsingILcats.Models;
 
 namespace ParsingILcats.Database

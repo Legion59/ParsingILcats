@@ -65,7 +65,7 @@ namespace ParsingILcats.Service
 
             foreach (var configuration in collection)
             {
-                var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration).ToList();
+                var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration).Take(1).ToList();
 
                 configuration.Groups = grops;
                 result.AddRange(grops);
@@ -125,7 +125,7 @@ namespace ParsingILcats.Service
                 collection.Remove(part);
             }
 
-            WriteResult(collection.Count, typeof(SubGroupModel).Name);
+            UpdateSubGroup(collection.Count);
             WriteResult(result.Count, typeof(PartsModel).Name);
 
             return result;
@@ -144,6 +144,13 @@ namespace ParsingILcats.Service
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.WriteLine($"{typeName} count: {result}");
+        }
+        private void UpdateSubGroup(int subGroupCount)
+        {
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.WriteLine($"{typeof(SubGroupModel).Name} count: {subGroupCount}");
         }
     }
 }

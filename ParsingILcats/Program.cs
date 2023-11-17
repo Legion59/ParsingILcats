@@ -4,6 +4,10 @@ using ParsingILcats.Service;
 
 namespace ParsingILcats
 {
+    /*
+     * This program make web scraping from ilcats web page, specifically from https://www.ilcats.ru/toyota/. 
+     * For scraping I use AngleSharp framework, and save information to MSSQL database.
+     * */
     public class Program
     {
         static async Task Main()

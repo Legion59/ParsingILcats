@@ -5,7 +5,7 @@ using ParsingILcats.Parsing;
 
 namespace ParsingILcats.Service
 {
-    public class MonitoringProcessCollection
+    public class MonitoringParsingProcess
     {
         public async Task<List<MarketModel>> Markets(string urlMarket, string urlMainPage, HtmlParser htmlParser, HtmlClient htmlClient)
         {

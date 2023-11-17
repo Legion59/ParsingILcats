@@ -10,7 +10,7 @@ namespace ParsingILcats
         {
             HtmlClient htmlClient = new HtmlClient(new HttpClient());
             HtmlParser htmlParser = new HtmlParser();
-            MonitoringProcessCollection monitoringProcessCollection = new MonitoringProcessCollection();
+            MonitoringParsingProcess monitoringProcessCollection = new MonitoringParsingProcess();
 
             ParsingDbContext parsingDbContext = new ParsingDbContext();
 

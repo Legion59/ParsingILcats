@@ -25,7 +25,7 @@
         public async Task SaveImage(string imageUrl, string imageName)
         {
             var data = await _httpClient.GetByteArrayAsync($"https:{imageUrl}");
-            string path = @$"C:\Users\Admin\Documents\Visual Studio Projects\ParsingILcats\ParsingILcats\Images\{imageName}.jpg";
+            string path = @$"\Images\{imageName}.jpg";
 
             await File.WriteAllBytesAsync(path, data);
         }

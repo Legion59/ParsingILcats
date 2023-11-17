@@ -9,7 +9,7 @@ namespace ParsingILcats.Service
     {
         public async Task<List<MarketModel>> Markets(string urlMarket, string urlMainPage, HtmlParser htmlParser, HtmlClient htmlClient)
         {
-            var result = htmlParser.GetMarkets(await htmlClient.GetHtmlContent(urlMarket), urlMainPage).Take(1).ToList();
+            var result = htmlParser.GetMarkets(await htmlClient.GetHtmlContent(urlMarket), urlMainPage).ToList();
 
             Console.WriteLine($"Markets count: {result.Count}");
 
@@ -23,7 +23,7 @@ namespace ParsingILcats.Service
 
             foreach (var market in collection)
             {
-                var cars = htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market).Take(1).ToList();
+                var cars = htmlParser.GetModels(await htmlClient.GetHtmlContent(market.LinkCarModel), market).ToList();
 
                 market.Cars = cars;
                 result.AddRange(cars);
@@ -44,7 +44,7 @@ namespace ParsingILcats.Service
 
             foreach (var model in collection)
             {
-                var conf = htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model).Take(1).ToList();
+                var conf = htmlParser.GetConfigurations(await htmlClient.GetHtmlContent(model.LinkConfiguration), model).ToList();
 
                 model.Configurations = conf;
                 result.AddRange(conf);
@@ -65,7 +65,7 @@ namespace ParsingILcats.Service
 
             foreach (var configuration in collection)
             {
-                var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration).Take(1).ToList();
+                var grops = htmlParser.GetGroups(await htmlClient.GetHtmlContent(configuration.LinkToGroupPage), configuration).ToList();
 
                 configuration.Groups = grops;
                 result.AddRange(grops);
